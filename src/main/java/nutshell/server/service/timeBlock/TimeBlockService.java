@@ -89,6 +89,7 @@ public class TimeBlockService {
                         task -> TimeBlocksDto.builder()
                                 .id(task.getId())
                                 .name(task.getName())
+                                .status(task.getStatus().getContent())
                                 .timeBlocks(timeBlockRetriever.findAllByTaskIdAndTimeRange(task, startTime, endTime))
                                 .build()
                 ).toList();
