@@ -8,6 +8,7 @@ import java.util.List;
 public record TimeBlocksDto(
         Long id,
         String name,
+        String status,
         List<TimeBlockDto> timeBlocks
 ) {
 }
