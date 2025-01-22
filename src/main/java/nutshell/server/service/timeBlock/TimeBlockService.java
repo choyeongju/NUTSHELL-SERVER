@@ -108,6 +108,9 @@ public class TimeBlockService {
         if (startTime.isAfter(endTime)) {
             throw new BusinessException(BusinessErrorCode.TIME_CONFLICT);
         }
+        if (!startTime.toLocalDate().isEqual(endTime.toLocalDate())) {
+            throw new BusinessException(BusinessErrorCode.NOT_SAME_DATE_CONFLICT);
+        }
         if (startTime.getMinute() % 15 != 0 || endTime.getMinute() % 15 != 0) {
             throw new BusinessException(BusinessErrorCode.TIME_INVALID);
         }
