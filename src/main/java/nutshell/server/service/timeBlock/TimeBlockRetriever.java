@@ -33,7 +33,7 @@ public class TimeBlockRetriever {
                 () -> new NotFoundException(NotFoundErrorCode.NOT_FOUND_TIME_BLOCK)
         );
     }
-    public Boolean existsByTaskUserAndStartTimeBetweenAndEndTimeBetween(
+    public Boolean existsByTaskUserAndStartTimeBetweenAndEndTimeBetween( //1번째
             final User user,
             final LocalDateTime startTime,
             final LocalDateTime endTime
@@ -41,13 +41,13 @@ public class TimeBlockRetriever {
         return timeBlockRepository.existsByTaskUserAndStartTimeBetweenAndEndTimeBetween(user, startTime, endTime);
     }
 
-    public Boolean existsByTaskAndStartTimeBetweenAndEndTimeBetweenAndIdNot(
-            final Task task,
+    public Boolean existsByTaskAndStartTimeBetweenAndEndTimeBetweenAndIdNot( //2번째
+            final User user,
             final Long id,
             final LocalDateTime startTime,
             final LocalDateTime endTime
     ) {
-        return timeBlockRepository.existsByTaskAndStartTimeBetweenAndEndTimeBetweenAndIdNot(task, id, startTime, endTime);
+        return timeBlockRepository.existsByTaskAndStartTimeBetweenAndEndTimeBetweenAndIdNot(user, id, startTime, endTime);
     }
 
     public Boolean existsByTaskAndStartTimeBetweenAndEndTimeBetween(

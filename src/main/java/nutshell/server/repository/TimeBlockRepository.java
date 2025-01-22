@@ -14,8 +14,8 @@ import java.util.Optional;
 public interface TimeBlockRepository extends JpaRepository<TimeBlock, Long> {
     @Query(value="select count(t) > 0 from TimeBlock t " +
             "where t.task.user = :user and " +
-            "((t.startTime > :startTime and t.startTime < :endTime) or " +
-            "(t.endTime > :startTime and t.endTime < :endTime))"
+            "t.startTime between :startTime and :endTime or " +
+            "t.endTime between :startTime and :endTime"
             )
     Boolean existsByTaskUserAndStartTimeBetweenAndEndTimeBetween(
             final User user,
@@ -24,13 +24,13 @@ public interface TimeBlockRepository extends JpaRepository<TimeBlock, Long> {
     );
 
     @Query(value="select count(t) > 0 from TimeBlock t " +
-            "where t.task = :task and " +
+            "where t.task.user = :user and " +
             "t.id != :id and " +
-            "t.startTime between :startTime and :endTime and " +
+            "t.startTime between :startTime and :endTime or " +
             "t.endTime between :startTime and :endTime"
     )
     Boolean existsByTaskAndStartTimeBetweenAndEndTimeBetweenAndIdNot(
-            final Task task,
+            final User user,
             final Long id,
             final LocalDateTime startTime,
             final LocalDateTime endTime
