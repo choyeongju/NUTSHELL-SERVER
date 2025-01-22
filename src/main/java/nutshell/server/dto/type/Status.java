@@ -10,7 +10,7 @@ import nutshell.server.exception.code.IllegalArgumentErrorCode;
 public enum Status {
     TODO("미완료"),
     DONE("완료"),
-    IN_PROGRESS("진행 중"),
+    IN_PROGRESS("진행중"),
     ;
 
     private final String content;
