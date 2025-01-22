@@ -39,6 +39,9 @@ public class TimeBlockService {
         checkValid(timeBlockRequestDto.startTime(), timeBlockRequestDto.endTime());
         User user = userRetriever.findByUserId(userId);
         Task task = taskRetriever.findByUserAndId(user, taskId);
+        if (timeBlockRetriever.existsByTaskUserAndStartTimeBetweenAndEndTimeBetween(user, timeBlockRequestDto.startTime(), timeBlockRequestDto.endTime())) {
+            throw new BusinessException(BusinessErrorCode.TIME_CONFLICT);
+        }
         return timeBlockSaver.save(TimeBlock.builder()
                 .task(task)
                 .startTime(timeBlockRequestDto.startTime())
@@ -57,7 +60,7 @@ public class TimeBlockService {
         checkValid(timeBlockRequestDto.startTime(), timeBlockRequestDto.endTime());
         User user = userRetriever.findByUserId(userId);
         Task task = taskRetriever.findByUserAndId(user, taskId);
-        if (timeBlockRetriever.existsByTaskAndStartTimeBetweenAndEndTimeBetweenAndIdNot(task, timeBlockId, timeBlockRequestDto.startTime(), timeBlockRequestDto.endTime())) {
+        if (timeBlockRetriever.existsByTaskAndStartTimeBetweenAndEndTimeBetweenAndIdNot(user, timeBlockId, timeBlockRequestDto.startTime(), timeBlockRequestDto.endTime())) {
             throw new BusinessException(BusinessErrorCode.TIME_CONFLICT);
         }
         TimeBlock timeBlock = timeBlockRetriever.findByTaskAndId(task, timeBlockId);
@@ -104,9 +107,6 @@ public class TimeBlockService {
     ) {
         if (startTime.isAfter(endTime)) {
             throw new BusinessException(BusinessErrorCode.TIME_CONFLICT);
-        }
-        if (!startTime.toLocalDate().isEqual(endTime.toLocalDate())) {
-            throw new BusinessException(BusinessErrorCode.NOT_SAME_DATE_CONFLICT);
         }
         if (startTime.getMinute() % 15 != 0 || endTime.getMinute() % 15 != 0) {
             throw new BusinessException(BusinessErrorCode.TIME_INVALID);
